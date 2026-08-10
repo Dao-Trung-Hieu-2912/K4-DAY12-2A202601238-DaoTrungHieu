@@ -40,33 +40,36 @@ Ghi tên biến và **nguồn giá trị**, không ghi giá trị:
 
 Thay `<URL>` bằng Public URL ở trên:
 
-```bash
+```powershell
+$URL = "https://k4-day12-2a202601238-daotrunghieu.onrender.com"
+$API_TOKEN = "rJ_S1N5HC142tREVu0HhAACU6GisVnJPlSouLzOy3Hg"
+
 # 1. Liveness — mong đợi 200 {"status":"ok"}
-curl -i https://k4-day12-2a202601238-daotrunghieu.onrender.com/healthz
+curl.exe -i "$URL/healthz"
 
 # 2. Readiness — mong đợi 200 {"status":"ready"} (đã nối được Redis)
-curl -i https://k4-day12-2a202601238-daotrunghieu.onrender.com/readyz
+curl.exe -i "$URL/readyz"
 
 # 3. Không có token — mong đợi 401 kèm header WWW-Authenticate
-curl -i -X POST https://k4-day12-2a202601238-daotrunghieu.onrender.com/chat \
-  -H "Content-Type: application/json" \
-  -d '{"message":"Hello"}'
+curl.exe -i -X POST "$URL/chat" `
+  -H "Content-Type: application/json" `
+  -d "{\`"message\`":\`"Hello\`"}"
 
 # 4. Có token — mong đợi 200 kèm câu trả lời
-curl -i -X POST https://k4-day12-2a202601238-daotrunghieu.onrender.com/chat \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $API_TOKEN" \
-  -H "X-Client-Id: sv-test" \
-  -d '{"message":"Deploy là gì?"}'
+curl.exe -i -X POST "$URL/chat" `
+  -H "Content-Type: application/json" `
+  -H "Authorization: Bearer $API_TOKEN" `
+  -H "X-Client-Id: sv-test" `
+  -d "{\`"message\`":\`"Deploy\`"}"
 
 # 5. Rate limit — gọi 15 lần, những lần cuối phải trả 429
-for i in $(seq 1 15); do
-  curl -s -o /dev/null -w "%{http_code} " -X POST https://k4-day12-2a202601238-daotrunghieu.onrender.com/chat \
-    -H "Content-Type: application/json" \
-    -H "Authorization: Bearer $API_TOKEN" \
-    -H "X-Client-Id: sv-test" \
-    -d '{"message":"test"}'
-done; echo
+1..15 | ForEach-Object {
+  curl.exe -s -o NUL -w "%{http_code} " -X POST "$URL/chat" `
+    -H "Content-Type: application/json" `
+    -H "Authorization: Bearer $API_TOKEN" `
+    -H "X-Client-Id: sv-test" `
+    -d "{\`"message\`":\`"test\`"}"
+}
 ```
 
 ## Kết Quả Chạy Thật
@@ -74,14 +77,73 @@ done; echo
 Dán output của các lệnh trên vào đây:
 
 ```
+# 1. Liveness — mong đợi 200 {"status":"ok"}
 HTTP/1.1 200 OK
+Date: Mon, 10 Aug 2026 09:59:06 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: keep-alive
+cf-cache-status: DYNAMIC
+rndr-id: 11dfe17a-8104-4184
+Server: cloudflare
+vary: Accept-Encoding
+x-render-origin-server: uvicorn
+CF-RAY: a28e25579e1706a7-HKG
+alt-svc: h3=":443"; ma=86400
+
 {"status":"ok","service":"day12-chat-service","version":"1.0.0"}
 
+# 2. Readiness — mong đợi 200 {"status":"ready"} (đã nối được Redis)
 HTTP/1.1 200 OK
+Date: Mon, 10 Aug 2026 10:01:11 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: keep-alive
+rndr-id: 05d25e83-69a1-47a1
+Server: cloudflare
+vary: Accept-Encoding
+x-render-origin-server: uvicorn
+cf-cache-status: DYNAMIC
+CF-RAY: a28e2866aa42d0a1-HKG
+alt-svc: h3=":443"; ma=86400
+
 {"status":"ready","redis":true}
 
+# 3. Không có token — mong đợi 401 kèm header WWW-Authenticate
 HTTP/1.1 401 Unauthorized
+Date: Mon, 10 Aug 2026 10:01:53 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: keep-alive
+cf-cache-status: DYNAMIC
+rndr-id: 049c1b37-10ea-4c6d
+Server: cloudflare
+vary: Accept-Encoding
+www-authenticate: Bearer
+x-render-origin-server: uvicorn
+CF-RAY: a28e296f2bd104be-HKG
+alt-svc: h3=":443"; ma=86400
+
 {"detail":"invalid or missing bearer token"}
+
+# 4. Có token — mong đợi 200 kèm câu trả lời
+HTTP/1.1 200 OK
+Date: Mon, 10 Aug 2026 10:07:49 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: keep-alive
+rndr-id: 3d7ca6bd-7ec5-468d
+Server: cloudflare
+vary: Accept-Encoding
+x-render-origin-server: uvicorn
+cf-cache-status: DYNAMIC
+CF-RAY: a28e321c6baec189-SIN
+alt-svc: h3=":443"; ma=86400
+
+{"reply":"Câu hỏi hay. Deploy thường được giải quyết bằng cách chuẩn hóa môi trường chạy: cùng một image chạy giống nhau ở laptop và trên cloud. (Mình đang nhớ 10 lượt trao đổi trước đó.)","client_id":"sv-test","turns_before":10,"usd_cost":6.225e-05,"usage":{"prompt":239,"completion":44}}
+
+# 5. Rate limit — gọi 15 lần, những lần cuối phải trả 429
+200 200 200 200 200 200 200 200 200 200 429 429 429 429 429
 ```
 
 ## Ảnh Chụp Màn Hình
