@@ -17,7 +17,7 @@ from contextlib import asynccontextmanager
 from functools import lru_cache
 
 from fastapi import Depends, FastAPI
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
@@ -90,6 +90,15 @@ class ChatRequest(BaseModel):
 # ─────────────────────────────────────────────────────────────
 # Health & readiness
 # ─────────────────────────────────────────────────────────────
+@app.get("/", include_in_schema=False)
+def serve_ui():
+    """Phục vụ giao diện người dùng tĩnh tại thư mục gốc."""
+    import os
+    if os.path.exists("chat_ui.html"):
+        return FileResponse("chat_ui.html")
+    return JSONResponse(status_code=404, content={"detail": "Not Found"})
+
+
 @app.get("/healthz")
 def healthz():
     """Liveness probe — process còn sống không?
