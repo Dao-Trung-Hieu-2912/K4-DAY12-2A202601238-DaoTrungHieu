@@ -41,7 +41,7 @@ jobs:
     steps:
       - name: Deploy to Render
         run: |
-          curl -X POST -fsS "${{ secrets.RENDER_DEPLOY_HOOK }}"
+          curl -X POST -fsS "${{ secrets.RENDER_DEPLOY_HOOK_K4_DAY12 }}"
       - name: Smoke test
         run: |
           sleep 45
