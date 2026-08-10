@@ -94,8 +94,9 @@ class ChatRequest(BaseModel):
 def serve_ui():
     """Phục vụ giao diện người dùng tĩnh tại thư mục gốc."""
     import os
-    if os.path.exists("chat_ui.html"):
-        return FileResponse("chat_ui.html")
+    ui_path = os.path.join(os.path.dirname(__file__), "chat_ui.html")
+    if os.path.exists(ui_path):
+        return FileResponse(ui_path)
     return JSONResponse(status_code=404, content={"detail": "Not Found"})
 
 
