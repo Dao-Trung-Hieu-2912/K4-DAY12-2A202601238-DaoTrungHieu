@@ -18,6 +18,7 @@ from functools import lru_cache
 
 from fastapi import Depends, FastAPI
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 from utils.mock_llm import generate_reply
@@ -72,6 +73,14 @@ async def lifespan(_app: FastAPI):
 
 
 app = FastAPI(title="Day 12 Chat Service", version=SERVICE_VERSION, lifespan=lifespan)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 class ChatRequest(BaseModel):
