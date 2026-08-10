@@ -151,17 +151,20 @@ alt-svc: h3=":443"; ma=86400
 **1. Trang quản lý Dashboard:**
 ![Dashboard](screenshots/dashboard.jpg)
 
-**2. Kết quả /healthz:**
-![Healthz](screenshots/healthz.jpg)
+**2. Ảnh 1:**
+![Ảnh 1](screenshots/1.jpg)
 
-**3. Kết quả /readyz:**
-![Readyz](screenshots/readyz.jpg)
+**3. Ảnh 2:**
+![Ảnh 2](screenshots/2.jpg)
 
-**4. Kết quả /chat (Lỗi 401 - Không token):**
-![Chat 401](screenshots/chat_401.jpg)
+**4. Ảnh 3:**
+![Ảnh 3](screenshots/3.jpg)
 
-**5. Kết quả /chat (200 OK - Có token):**
-![Chat 200](screenshots/chat_200.jpg)
+**5. Ảnh 4:**
+![Ảnh 4](screenshots/4.jpg)
+
+**6. Ảnh 5:**
+![Ảnh 5](screenshots/5.jpg)
 
 ---
 
