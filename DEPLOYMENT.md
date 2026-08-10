@@ -148,10 +148,20 @@ alt-svc: h3=":443"; ma=86400
 
 ## Ảnh Chụp Màn Hình
 
-Đặt ảnh trong thư mục `screenshots/`:
+**1. Trang quản lý Dashboard:**
+![Dashboard](screenshots/dashboard.jpg)
 
-- `screenshots/dashboard.png` — trang quản lý service trên platform
-- `screenshots/healthz.png` — kết quả gọi `/healthz` từ trình duyệt hoặc curl
+**2. Kết quả /healthz:**
+![Healthz](screenshots/healthz.jpg)
+
+**3. Kết quả /readyz:**
+![Readyz](screenshots/readyz.jpg)
+
+**4. Kết quả /chat (Lỗi 401 - Không token):**
+![Chat 401](screenshots/chat_401.jpg)
+
+**5. Kết quả /chat (200 OK - Có token):**
+![Chat 200](screenshots/chat_200.jpg)
 
 ---
 
