@@ -28,13 +28,13 @@ Ghi tên biến và **nguồn giá trị**, không ghi giá trị:
 
 | Biến | Đã set | Ghi chú |
 |------|--------|---------|
-| `PORT` | ✅ | 8000 |
-| `API_TOKEN` | ✅ | trong .env local |
-| `REDIS_URL` | ✅ | redis://redis:6379/0 |
-| `BUCKET_CAPACITY` | ✅ | 10 |
-| `REFILL_PER_MINUTE` | ✅ | 10 |
-| `DAILY_BUDGET_USD` | ✅ | 1.0 |
-| `LOG_LEVEL` | ✅ | INFO |
+| `PORT` | ✅ | Render tự động cấp phát |
+| `API_TOKEN` | ✅ | Tự tạo (sinh ngẫu nhiên) |
+| `REDIS_URL` | ✅ | URL Internal của dịch vụ Redis trên Render |
+| `BUCKET_CAPACITY` | ✅ | Lấy từ `.env` local (tự chọn) |
+| `REFILL_PER_MINUTE` | ✅ | Lấy từ `.env` local (tự chọn) |
+| `DAILY_BUDGET_USD` | ✅ | Lấy từ `.env` local (tự chọn) |
+| `LOG_LEVEL` | ✅ | Lấy từ `.env` local (tự chọn) |
 
 ## Lệnh Kiểm Tra
 
